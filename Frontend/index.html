@@ -4,11 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SheEmpire</title>
-    <link rel="stylesheet" href="Frontend/style/index.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <header>
-        <div class="logo">SheEmpire</div>
+        <div class="logo">EliteFemme</div>
         <nav>
             <ul>
                 <li><a href="#">Home</a></li>
@@ -81,7 +81,14 @@
         <h2>Book an Appointment</h2>
         <p>Want to learn more about our products? Book a consultation.</p>
         <button>Book Now</button>
-    </section>
+    </section>CREATE TABLE users (
+        id SERIAL PRIMARY KEY,
+        full_name VARCHAR(255) NOT NULL,
+        email VARCHAR(255) UNIQUE NOT NULL,
+        phone VARCHAR(20) UNIQUE NOT NULL,
+        address TEXT,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    );
 
     <section id="contact">
         <h2>Contact Us</h2>
@@ -89,7 +96,7 @@
     </section>
 
     <footer>
-        <p>© 2025 SheEmpire. All Rights Reserved.</p>
+        <p>© 2025 EliteFemme. All Rights Reserved.</p>
     </footer>
 </body>
 </html>
