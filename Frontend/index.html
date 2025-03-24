@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SheEmpire</title>
+    <link rel="stylesheet" href="Frontend/style/index.css">
+</head>
+<body>
+    <header>
+        <div class="logo">SheEmpire</div>
+        <nav>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#products">Shop</a></li>
+                <li><a href="#order">Order</a></li>
+                <li><a href="#booking">Bookings</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <h1>Welcome to SheEmpire</h1>
+        <p>Luxury & Confidence in Every Product</p>
+        <a href="#products" class="btn">Shop Now</a>
+    </section>
+
+    <section id="products">
+        <h2>Our Collection</h2>
+        <div class="product-list">
+            <div class="product">
+                <img src="images/dera.jpg" alt="Dera">
+                <h3>Elegant Dera</h3>
+                <p>Ksh 1,500</p>
+                <button>Order Now</button>
+            </div>
+            <div class="product">
+                <img src="images/coconut-oil.jpg" alt="Coconut Oil">
+                <h3>Pure Coconut Oil</h3>
+                <p>Ksh 500</p>
+                <button>Order Now</button>
+            </div>
+            <div class="product">
+                <img src="images/spices.jpg" alt="Spices">
+                <h3>Exotic Spices</h3>
+                <p>Ksh 300</p>
+                <button>Order Now</button>
+            </div>
+            <div class="product">
+                <img src="images/perfume.jpg" alt="Perfume">
+                <h3>Luxury Perfume</h3>
+                <p>Ksh 2,000</p>
+                <button>Order Now</button>
+            </div>
+        </div>
+    </section>
+
+    <section id="order">
+        <h2>Place Your Order</h2>
+        <form>
+            <label for="name">Full Name:</label>
+            <input type="text" id="name" required>
+
+            <label for="product">Select Product:</label>
+            <select id="product">
+                <option value="dera">Elegant Dera</option>
+                <option value="coconut-oil">Pure Coconut Oil</option>
+                <option value="spices">Exotic Spices</option>
+                <option value="perfume">Luxury Perfume</option>
+            </select>
+
+            <label for="quantity">Quantity:</label>
+            <input type="number" id="quantity" min="1" required>
+
+            <button type="submit">Submit Order</button>
+        </form>
+    </section>
+
+    <section id="booking">
+        <h2>Book an Appointment</h2>
+        <p>Want to learn more about our products? Book a consultation.</p>
+        <button>Book Now</button>
+    </section>
+
+    <section id="contact">
+        <h2>Contact Us</h2>
+        <p>WhatsApp: <a href="https://wa.me/your_number" target="_blank">Chat with us</a></p>
+    </section>
+
+    <footer>
+        <p>© 2025 SheEmpire. All Rights Reserved.</p>
+    </footer>
+</body>
+</html>
