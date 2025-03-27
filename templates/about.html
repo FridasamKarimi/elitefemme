@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - EliteFemme</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <header>
+        <h1>EliteFemme</h1>
+        <p>Natural Beauty, Elite Style</p>
+        <nav>
+            <a href="{{ url_for('home') }}">Home</a> |
+            <a href="{{ url_for('about') }}">About Us</a> |
+            <a href="{{ url_for('contact') }}">Contact Us</a>
+        </nav>
+    </header>
+    <section class="about">
+        <h2>About EliteFemme</h2>
+        <p>EliteFemme is a small business dedicated to bringing you the finest natural products. 
+           Our Dera's Coconut Oil is sourced from the purest coconuts, perfect for nourishing your skin and hair. 
+           Our Mabuyu offers a delightful burst of tangy sweetness, crafted from traditional baobab recipes. 
+           We believe in quality, sustainability, and empowering beauty from within.</p>
+    </section>
+</body>
+</html>

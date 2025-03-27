@@ -3,100 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SheEmpire</title>
-    <link rel="stylesheet" href="style.css">
+    <title>EliteFemme</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <script src="https://js.stripe.com/v3/"></script>
 </head>
 <body>
     <header>
-        <div class="logo">EliteFemme</div>
+        <h1>EliteFemme</h1>
+        <p>Natural Beauty, Elite Style</p>
         <nav>
-            <ul>
-                <li><a href="#">Home</a></li>
-                <li><a href="#products">Shop</a></li>
-                <li><a href="#order">Order</a></li>
-                <li><a href="#booking">Bookings</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
+            <a href="{{ url_for('home') }}">Home</a> |
+            <a href="{{ url_for('about') }}">About Us</a> |
+            <a href="{{ url_for('contact') }}">Contact Us</a>
         </nav>
     </header>
-
-    <section class="hero">
-        <h1>Welcome to SheEmpire</h1>
-        <p>Luxury & Confidence in Every Product</p>
-        <a href="#products" class="btn">Shop Now</a>
-    </section>
-
-    <section id="products">
-        <h2>Our Collection</h2>
-        <div class="product-list">
+    <section class="products">
+        {% for product in products %}
             <div class="product">
-                <img src="images/dera.jpg" alt="Dera">
-                <h3>Elegant Dera</h3>
-                <p>Ksh 1,500</p>
-                <button>Order Now</button>
+                <img src="{{ product.name|lower|replace(' ', '-') }}.jpg" alt="{{ product.name }}">
+                <h3>{{ product.name }}</h3>
+                <p>{{ product.description }} - ${{ product.price }}</p>
+                <button class="add-to-cart" data-id="{{ product.id }}" data-name="{{ product.name }}" 
+                        data-price="{{ product.price }}">Add to Cart</button>
             </div>
-            <div class="product">
-                <img src="images/coconut-oil.jpg" alt="Coconut Oil">
-                <h3>Pure Coconut Oil</h3>
-                <p>Ksh 500</p>
-                <button>Order Now</button>
-            </div>
-            <div class="product">
-                <img src="images/spices.jpg" alt="Spices">
-                <h3>Exotic Spices</h3>
-                <p>Ksh 300</p>
-                <button>Order Now</button>
-            </div>
-            <div class="product">
-                <img src="images/perfume.jpg" alt="Perfume">
-                <h3>Luxury Perfume</h3>
-                <p>Ksh 2,000</p>
-                <button>Order Now</button>
-            </div>
-        </div>
+        {% endfor %}
     </section>
-
-    <section id="order">
-        <h2>Place Your Order</h2>
-        <form>
-            <label for="name">Full Name:</label>
-            <input type="text" id="name" required>
-
-            <label for="product">Select Product:</label>
-            <select id="product">
-                <option value="dera">Elegant Dera</option>
-                <option value="coconut-oil">Pure Coconut Oil</option>
-                <option value="spices">Exotic Spices</option>
-                <option value="perfume">Luxury Perfume</option>
-            </select>
-
-            <label for="quantity">Quantity:</label>
-            <input type="number" id="quantity" min="1" required>
-
-            <button type="submit">Submit Order</button>
-        </form>
-    </section>
-
-    <section id="booking">
-        <h2>Book an Appointment</h2>
-        <p>Want to learn more about our products? Book a consultation.</p>
-        <button>Book Now</button>
-    </section>CREATE TABLE users (
-        id SERIAL PRIMARY KEY,
-        full_name VARCHAR(255) NOT NULL,
-        email VARCHAR(255) UNIQUE NOT NULL,
-        phone VARCHAR(20) UNIQUE NOT NULL,
-        address TEXT,
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-    );
-
-    <section id="contact">
-        <h2>Contact Us</h2>
-        <p>WhatsApp: <a href="https://wa.me/your_number" target="_blank">Chat with us</a></p>
-    </section>
-
-    <footer>
-        <p>© 2025 EliteFemme. All Rights Reserved.</p>
-    </footer>
+    <div id="cart">
+        <h2>Cart</h2>
+        <ul id="cart-items"></ul>
+        <p>Total: $<span id="cart-total">0</span></p>
+        <button id="checkout">Checkout</button>
+    </div>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>
