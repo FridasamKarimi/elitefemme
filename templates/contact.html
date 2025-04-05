@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - EliteFemme</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <header>
+        <h1>EliteFemme</h1>
+        <p>Natural Beauty, Elite Style</p>
+        <nav>
+            <a href="{{ url_for('home') }}">Home</a> |
+            <a href="{{ url_for('about') }}">About Us</a> |
+            <a href="{{ url_for('contact') }}">Contact Us</a>
+        </nav>
+    </header>
+    <section class="contact">
+        <h2>Contact Us</h2>
+        {% if success %}
+            <p style="color: green;">Thank you! We’ll get back to you soon.</p>
+        {% endif %}
+        <form method="POST" action="{{ url_for('contact') }}">
+            <label for="name">Name:</label><br>
+            <input type="text" id="name" name="name" required><br>
+            <label for="email">Email:</label><br>
+            <input type="email" id="email" name="email" required><br>
+            <label for="message">Message:</label><br>
+            <textarea id="message" name="message" required></textarea><br>
+            <button type="submit">Send</button>
+        </form>
+    </section>
+</body>
+</html>

@@ -1,18 +1,14 @@
 from flask import render_template, request, jsonify, redirect, url_for
 from . import app
-from .db import get_db_conection
-import stripe 
-from .config import Config
-
-stripe.api_key = Config.STRIPE_SECRET_KEY
+from .db import get_db_connection
 
 @app.route('/')
 def home():
-    conn = get_db_conection()
+    conn = get_db_connection
     c = conn.cursor()
     c.execute("SELECT * FROM products")
     products = [{'id': row[0], 'name': row[1], 'price': row[2], 'description': row[3], 'stock': row[4]}
-               for row in c.fetchall()]
+                for row in c.fetchall()]
     conn.close()
     return render_template('index.html', products=products)
 
@@ -28,44 +24,74 @@ def contact():
         message = request.form['message']
         print(f"Contact Form: {name}, {email}, {message}")
         return redirect(url_for('contact', success=True))
-    return render_template('contact.html', success=request.args.get('success', False))
-total = sum(item['price'] for item in cart)
-@app.route('/create-checkout-session', methods=['POST'])
-def create_checkout_session():
-    cart = request.json['cart']
-    conn = get_db_conection()
-    c = conn.cursor()
-    items = ', '.join([f"{item['name']} (${item['price']})" for item in cart])
+    return render_template('contact.html', succes=request.args.get('success', False))
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        email = request.form['email']
+        password = request.form['password']
+        user = User.find_by_email(email)
+        if user and check_password_hash(user.password_hash, password):
+            login_user(user)
+            return redirect(url_for('home'))
+        flash('invalid email or passowrd')
+        return render_template('login.html')
+    
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if request.method == 'POST':
+        username = request.form['username']
+        email = request.form['email']
+        password = request.form['password']
+        if User.find_by_email(email):
+            flash('Email already registered')
+        else:
+            password_hash = generate_password_hash(password)
+            conn = get_db_connection
+            c = conn.cursor()
+            c.execute("INSERT INTO users (username, email, pasword_harsh) VALUES (%s, %s, %s)",
+                        (username, email, password_hash))
+            conn.commit()
+            conn.close()
+            return redirect(url_for('login'))
+        return render_template('register.html')  
 
-    c.execute("INSERT INTO orders (items, total, status) VALUES (%s, %s, %s) RETURNING id", 
-              (items, total, 'pending'))
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('home'))
+
+@app.route('/checkout', methods=['POST'])
+@login_required
+def checkout():
+    cart = request.json.get('cart', [])
+    if not cart:
+        return jsonify({'error': 'Cart is empty'}), 400
+    total = sum(item['price'] for item in cart)
+    conn = get_db_connection()
+    c = conn.cursor()
+    c.execute("INSERT INTO orders (user_id, total, status) VALUES (%s, %s, %s) RETURNING order_id",
+              (current_user.id, total, 'completed'))
     order_id = c.fetchone()[0]
+    for item in cart:
+        c.execute("INSERT INTO order_items (order_id, product_id, quantity, price_at_time) VALUES (%s, %s, %s, %s)",
+                  (order_id, item['id'], 1, item['price']))  #
     conn.commit()
     conn.close()
-    line_items = [{'price_data': {'currency': 'usd', 'product_data': {'name': item['name']}, 
-                                  'unit_amount': int(item['price'] * 100)}, 'quantity': 1} 
-                  for item in cart]
-    session = stripe.checkout.Session.create(
-        payment_method_types=['card'],
-        line_items=line_items,
-        mode='payment',
-        success_url='http://localhost:5000/success?order_id=' + str(order_id),
-        cancel_url='http://localhost:5000/cancel'
-    )
-    return jsonify({'id': session.id})
+    return jsonify({'success': True, 'order_id': order_id})
 
-@app.route('succes')
+@app.route('/success')
 def success():
-    order_id = request.args.get('orders_id')
-    conn = get_db_conection()
-    c = conn.cursor()
-    c.execute("UPDATE orders SET status = %s", ('completed', order_id))
-    conn.commit()
-    conn.close()
-    return "Payment Successful! Thankyou you for shopping with EliteFemme."
+    order_id = request.args.get('order_id')
+    return f"Order #{order_id} Successful! Thank you for shopping with EliteFemme."
 
 @app.route('/cancel')
 def cancel():
-    return "Payment canceled. Back to shopping?"
+    return "Checkout canceled. Back to shopping?"
 
-    
+
+
+        
+
+        
