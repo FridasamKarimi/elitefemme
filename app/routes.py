@@ -1,10 +1,13 @@
-from flask import render_template, request, jsonify, redirect, url_for
+from flask import render_template, request, redirect, url_for, jsonify, flash
+from flask_login import login_user, logout_user, login_required, current_user  # Add login_required here
+from werkzeug.security import generate_password_hash, check_password_hash
 from . import app
 from .db import get_db_connection
+from .models import User
 
 @app.route('/')
 def home():
-    conn = get_db_connection
+    conn = get_db_connection()
     c = conn.cursor()
     c.execute("SELECT * FROM products")
     products = [{'id': row[0], 'name': row[1], 'price': row[2], 'description': row[3], 'stock': row[4]}
@@ -47,7 +50,7 @@ def register():
             flash('Email already registered')
         else:
             password_hash = generate_password_hash(password)
-            conn = get_db_connection
+            conn = get_db_connection()
             c = conn.cursor()
             c.execute("INSERT INTO users (username, email, pasword_harsh) VALUES (%s, %s, %s)",
                         (username, email, password_hash))

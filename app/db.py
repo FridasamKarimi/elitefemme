@@ -3,11 +3,11 @@ from .config import Config
 
 def get_db_connection():
     conn = psycopg2.connect(
-        dbname=Config.DB_CONFIG['dbname'],
-        user=Config.DB_CONFIG['user'],
-        password=Config.DB_CONFIG['password'],
+        dbname=Config.DB_CONFIG['elitefemmedb'],
+        user=Config.DB_CONFIG['frida'],
+        password=Config.DB_CONFIG['root'],
         host=Config.DB_CONFIG['host'],
-        port=Config.DB_CONFIG['port']
+        port=Config.DB_CONFIG['5432']
     )
     return conn
 
